@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link';
 import utilStyles from '../styles/utils.module.css';
 import { getSortedPostsData } from '../lib/posts';
+import Layout from '../components/layout';
+import Date from '../components/date';
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -27,7 +29,10 @@ export default function Home({ allPostsData }) {
 
   // const { data: session } = useSession()
   // if(session) {
-  return <>
+  return <Layout
+    home={true}
+  >
+
     {/* Signed in as {session.user.email} <br/> */}
     {/* <button onClick={() => signOut()}>Sign out</button> */}
     <div className="container">
@@ -46,12 +51,13 @@ export default function Home({ allPostsData }) {
           <ul className={utilStyles.list}>
             {allPostsData.map(({ id, date, title }) => (
               <li className={utilStyles.listItem} key={id}>
-                {title}
+                <Link href={`/posts/${id}`}>{title}</Link>
                 <br />
-                {id}
-                <br />
-                {date}
+                <small className={utilStyles.lightText}>
+                  <Date dateString={date} />
+                </small>
               </li>
+
             ))}
           </ul>
         </section>
@@ -215,7 +221,7 @@ export default function Home({ allPostsData }) {
         }
       `}</style>
     </div>
-  </>
+  </Layout>
   // // }
   // return <>
   //   Not signed in <br/>
